@@ -1,0 +1,61 @@
+version: "3"
+services:
+  web:
+    build: ./dockerfiles/web
+    tty: true
+    links:
+      - db
+      - redis
+      - mongo
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./conf:/go/src/app/conf
+      - ./authtification:/go/src/authtification
+      - ./controllers:/go/src/app/controllers
+      - ./models:/go/src/app/models
+      - ./routers:/go/src/app/routers
+      - ./static:/go/src/app/static
+      - ./tests:/go/src/app/tests
+      - ./views:/go/src/app/views
+      - ./main.go:/go/src/app/main.go
+      - ./app:/go/src/app/app
+
+  db:
+    build: ./dockerfiles/db
+    restart: always
+    #    volumes:
+    #      - ./data/db:/var/lib/db/
+    #      - ./data:/data
+    environment:
+      MYSQL_ROOT_PASSWORD: poiuy
+      MYSQL_USER: go
+      MYSQL_PASSWORD: poiuy
+      MYSQL_DATABASE: go_app
+
+  postgres:
+    image: postgres:11
+    restart: always
+    environment:
+      POSTGRES_USER: go
+      POSTGRES_PASSWORD: poiuy
+      POSTGRES_DB: go_app
+
+  redis:
+    image: redis:5
+
+  mongo:
+    image: mongo:4
+    ports:
+      - "27018:27017"
+#    command: --auth
+    environment:
+#      MONGO_INITDB_ROOT_USERNAME: go
+#      MONGO_INITDB_ROOT_PASSWORD: poiuy
+      MONGO_INITDB_DATABASE: go_app
+
+  adminer:
+    image: dockette/adminer
+    restart: always
+    ports:
+      - 8888:80
