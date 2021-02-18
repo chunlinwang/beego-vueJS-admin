@@ -2,7 +2,7 @@
 
 # beego-vueJS-admin
 
-This is a my learning project. I haved created since 2018. 
+This is a my learning project which I haved created since 2018. 
 
 There are 2 parts in this project. 
 
